@@ -56,6 +56,8 @@ class BrandController extends \yii\web\Controller
                 }
                 //验证成功
                 $brand->save();
+                //添加成功后，提示
+                \Yii::$app->session->setFlash('success','品牌添加成功');
                 //跳转到列表页
                 return $this->redirect(['brand/index']);
             }
@@ -93,6 +95,8 @@ class BrandController extends \yii\web\Controller
                 }
                 //验证成功
                 $brand->save();
+                //修改成功后，提示
+                \Yii::$app->session->setFlash('success','品牌修改成功');
                 //跳转到列表页
                 return $this->redirect(['brand/index']);
             }
@@ -108,6 +112,8 @@ class BrandController extends \yii\web\Controller
         //将查找到的id状态修改为-1，以便列表页，不用展示出来
         $brand->status=-1;
         $brand->save();
+        //删除成功后，提示
+        \Yii::$app->session->setFlash('success','品牌删除成功');
         //跳转到列表页
         return $this->redirect(['brand/index']);
     }

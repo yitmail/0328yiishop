@@ -40,6 +40,8 @@ class ArticleCategoryController extends \yii\web\Controller
             if($model->validate()){
                 //验证成功
                 $model->save();
+                //添加成功后，提示
+                \Yii::$app->session->setFlash('success','文章分类添加成功');
                 //跳转到列表页
                 return $this->redirect(['article-category/index']);
             }else{
@@ -65,6 +67,8 @@ class ArticleCategoryController extends \yii\web\Controller
             if($model->validate()){
                 //验证成功
                 $model->save();
+                //修改成功后，提示
+                \Yii::$app->session->setFlash('success','文章分类修改成功');
                 //跳转到列表页
                 return $this->redirect(['article-category/index']);
             }else{
@@ -83,6 +87,8 @@ class ArticleCategoryController extends \yii\web\Controller
         //将查询到的状态，改为-1
         $model->status=-1;
         $model->save();
+        //删除成功后，提示
+        \Yii::$app->session->setFlash('success','文章分类删除成功');
         //跳转到列表页
         return $this->redirect(['article-category/index']);
     }
