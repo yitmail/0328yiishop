@@ -12,7 +12,7 @@ class ArticleCategoryController extends \yii\web\Controller
     public function actionIndex()
     {
         //分页 总条数 每页显示条数  当前是第几条
-        $query=ArticleCategory::find();
+        $query=ArticleCategory::find()->where(['>','status',-1]);
         //统计总条数
         $total=$query->count();
         //每页显示3条
@@ -23,7 +23,7 @@ class ArticleCategoryController extends \yii\web\Controller
             'defaultPageSize'=>$perPage
         ]);
         //根据条件查找相应数据
-        $models=$query->where(['>','status',-1])->limit($pager->limit)->offset($pager->offset)->orderBy('id')->all();
+        $models=$query->limit($pager->limit)->offset($pager->offset)->orderBy('sort desc')->all();
         return $this->render('index',['models'=>$models,'pager'=>$pager]);
     }
     //添加文章分类

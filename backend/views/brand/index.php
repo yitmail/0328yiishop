@@ -1,8 +1,8 @@
-<?=\yii\bootstrap\Html::a('添加',['brand/add'],['class'=>'btn btn-info'])?>
+<?=\yii\bootstrap\Html::a('添加',['brand/add'],['class'=>'btn btn-sm btn-primary'])?>
 <table class="table table-bordered table-responsive">
     <tr>
         <td>ID</td>
-        <td>商品名称</td>
+        <td>品牌名</td>
         <td>简介</td>
         <td>logo</td>
         <td>排序</td>
@@ -18,8 +18,8 @@
         <td><?=$brand->sort?></td>
         <td><?=\backend\models\Brand::getStatusOptions()[$brand->status]?></td>
         <td>
-            <?=\yii\bootstrap\Html::a('修改',['brand/edit','id'=>$brand->id],['class'=>'btn btn-danger'])?>
-            <?=\yii\bootstrap\Html::a('删除',['brand/delete','id'=>$brand->id],['class'=>'btn btn-danger'])?>
+            <?=\yii\bootstrap\Html::a('修改',['brand/edit','id'=>$brand->id],['class'=>'btn btn-sm btn-warning'])?>
+            <?=\yii\bootstrap\Html::a('删除',['brand/delete','id'=>$brand->id],['class'=>'btn btn-sm btn-danger'])?>
         </td>
     </tr>
     <?php endforeach;?>
@@ -28,6 +28,6 @@
     <?php
         //分页工具条
         echo \yii\widgets\LinkPager::widget(['pagination'=>$pager,'nextPageLabel'=>'下一页',
-            'prevPageLabel'=>'上一页','firstPageLabel'=>'首页','lastPageLabel'=>'尾页']);
+            'prevPageLabel'=>'上一页','firstPageLabel'=>'首页','lastPageLabel'=>'末页']);
     ?>
 </div>
