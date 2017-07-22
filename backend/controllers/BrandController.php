@@ -142,7 +142,7 @@ class BrandController extends \yii\web\Controller
                 //END METHOD
                 //BEGIN CLOSURE BY-HASH
                 'overwriteIfExist' => true,//如果文件已存在，是否覆盖
-               /* 'format' => function (UploadAction $action) {
+/*                'format' => function (UploadAction $action) {
                     $fileext = $action->uploadfile->getExtension();
                     $filename = sha1_file($action->uploadfile->tempName);
                     return "{$filename}.{$fileext}";
@@ -167,7 +167,7 @@ class BrandController extends \yii\web\Controller
                 'afterValidate' => function (UploadAction $action) {},
                 'beforeSave' => function (UploadAction $action) {},
                 'afterSave' => function (UploadAction $action) {
-                    $action->output['fileUrl'] = $action->getWebUrl();//输出文件的相对路径
+//                    $action->output['fileUrl'] = $action->getWebUrl();//输出文件的相对路径
 //                    $action->getFilename(); // "image/yyyymmddtimerand.jpg"
 //                    $action->getWebUrl(); //  "baseUrl + filename, /upload/image/yyyymmddtimerand.jpg"
 //                    $action->getSavePath(); // "/var/www/htdocs/upload/image/yyyymmddtimerand.jpg"

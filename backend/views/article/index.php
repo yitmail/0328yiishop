@@ -1,6 +1,6 @@
 
 <form action="" method="get" style="float: right">
-    <input type="text" name="keywords" class=""/>
+    <input type="text" name="keywords" placeholder="输入搜索内容" class=""/>
     <input type="submit" value="搜索" class="btn btn-sm btn-primary">
 </form>
 <?=\yii\bootstrap\Html::a('添加',['article/add'],['class'=>'btn btn-sm btn-primary'])?>

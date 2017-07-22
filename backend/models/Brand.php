@@ -43,7 +43,8 @@ class Brand extends \yii\db\ActiveRecord
     {
         return [
             [['name','intro','sort','status'],'required'],
-            ['imgFile','file','extensions'=>['jpg','png','bmp']]
+            //['imgFile','file','extensions'=>['jpg','png','bmp']]
+            [['logo'], 'string', 'max' => 255],
         ];
     }
 
