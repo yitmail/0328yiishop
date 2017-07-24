@@ -16,7 +16,7 @@
         <td><?=$model->sort?></td>
         <td><?=\backend\models\ArticleCategory::getStatusOptions()[$model->status]?></td>
         <td>
-            <?=\yii\bootstrap\Html::a('修改',['article-category/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning'])?>
+            <?=\yii\bootstrap\Html::a('编辑',['article-category/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning'])?>
             <?=\yii\bootstrap\Html::a('删除',['article-category/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger'])?>
         </td>
     </tr>

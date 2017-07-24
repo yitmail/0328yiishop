@@ -1,3 +1,4 @@
+
 <?=\yii\bootstrap\Html::a('添加',['brand/add'],['class'=>'btn btn-sm btn-primary'])?>
 <table class="table table-bordered table-responsive">
     <tr>
@@ -18,7 +19,7 @@
         <td><?=$brand->sort?></td>
         <td><?=\backend\models\Brand::getStatusOptions()[$brand->status]?></td>
         <td>
-            <?=\yii\bootstrap\Html::a('修改',['brand/edit','id'=>$brand->id],['class'=>'btn btn-sm btn-warning'])?>
+            <?=\yii\bootstrap\Html::a('编辑',['brand/edit','id'=>$brand->id],['class'=>'btn btn-sm btn-warning'])?>
             <?=\yii\bootstrap\Html::a('删除',['brand/delete','id'=>$brand->id],['class'=>'btn btn-sm btn-danger'])?>
         </td>
     </tr>

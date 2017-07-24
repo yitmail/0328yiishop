@@ -25,7 +25,7 @@ class BrandController extends \yii\web\Controller
             'defaultPageSize'=>$perPage,
         ]);
         //根据指定条件找到出相应数据
-        $brands=$query->limit($pager->limit)->offset($pager->offset)->orderBy('sort desc')->all();
+        $brands=$query->limit($pager->limit)->offset($pager->offset)->orderBy('id desc')->all();
         //调用视图，并传值
         return $this->render('index',['brands'=>$brands,'pager'=>$pager]);
     }

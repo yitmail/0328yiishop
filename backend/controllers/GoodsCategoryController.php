@@ -4,27 +4,30 @@ namespace backend\controllers;
 
 use backend\models\GoodsCategory;
 use yii\data\Pagination;
+use yii\db\Exception;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 class GoodsCategoryController extends \yii\web\Controller
 {
     //展示分类列表
-    public function actionIndex()
+    public function actionIndex($keywords='')
     {
-        //查询所有数据
-        $query=GoodsCategory::find();
-//        var_dump($query);exit;
-        //统计总条数
-        $total=$query->count();
-        //每页显示条数
-        $perPage=3;
-        //分页工具类
-        $pager=new Pagination([
-            'totalCount'=>$total,
-            'defaultPageSize'=>$perPage,
-        ]);
-        $models=$query->limit($pager->limit)->offset($pager->offset)->all();
-        return $this->render('index',['models'=>$models,'pager'=>$pager]);
+              //查询所有数据
+              $query=GoodsCategory::find();
+      //        var_dump($query);exit;
+              //统计总条数
+              $total=$query->count();
+              //每页显示条数
+              $perPage=3;
+              //分页工具类
+              $pager=new Pagination([
+                  'totalCount'=>$total,
+                  'defaultPageSize'=>$perPage,
+              ]);
+              $models=$query->where("name like '%{$keywords}%'")->limit($pager->limit)->offset($pager->offset)->orderBy('tree,lft')->all();
+              return $this->render('index',['models'=>$models,'pager'=>$pager]);
     }
 
     //添加商品分类
@@ -33,9 +36,14 @@ class GoodsCategoryController extends \yii\web\Controller
         $goodsCategory=new GoodsCategory(['parent_id'=>0]);
         //判断提交方式，验证数据
         if($goodsCategory->load(\Yii::$app->request->post()) && $goodsCategory->validate()){
-            $name=GoodsCategory::find()->where(['name'=>$goodsCategory->name])->all();
-            if($name) {
-                throw new HttpException('404', '该分类已存在');
+            $name=$goodsCategory->name;
+            $parent_id=$goodsCategory->parent_id;
+            $category=GoodsCategory::find()->andWhere(['name'=>$name,'parent_id'=>$parent_id])->all();
+//               var_dump($category);exit;
+            if($category){
+                \Yii::$app->session->setFlash('warning','该分类已存在');
+                //跳转到添加页面
+                return $this->redirect(['goods-category/add']);
             }
             //$goodsCategory->save();//因为需要判断计算节点，所以不能直接保存
             //判断是否是添加一级分类
@@ -99,32 +107,54 @@ class GoodsCategoryController extends \yii\web\Controller
     public function actionEdit($id){
         //获取一条分类信息
         $goodsCategory=GoodsCategory::findOne(['id'=>$id]);
-       // var_dump($category->name);exit;
+        if($goodsCategory==null){
+            throw new NotFoundHttpException('分类不存在');
+        }
         //判断提交方式，验证数据
         if($goodsCategory->load(\Yii::$app->request->post()) && $goodsCategory->validate()){
-            $name=GoodsCategory::find()->where(['name'=>$goodsCategory->name])->all();
-            if($name) {
-                throw new HttpException('404', '该分类已存在');
+            $name=$goodsCategory->oldAttributes['name'];
+            $parent_id=$goodsCategory->oldAttributes['parent_id'];
+            $category=GoodsCategory::find()->andWhere(['name'=>$name,'parent_id'=>$parent_id])->all();
+//               var_dump($category);exit;
+            if($category){
+                \Yii::$app->session->setFlash('warning','该分类已存在');
+                //跳转到添加页面
+                return $this->redirect(['goods-category/add']);
             }
-            //$goodsCategory->save();//因为需要判断计算节点，所以不能直接保存
-            //判断是否是添加一级分类
-            if($goodsCategory->parent_id){
-                //非一级分类
-                $category=GoodsCategory::findOne(['id'=>$goodsCategory->parent_id]);
-                if($category){
-                    $goodsCategory->prependTo($category);
-                }else{
-                    throw new HttpException('404','上级分类不存在');
-                }
+            //不能移动节点到自己节点下
+           /* if($goodsCategory->parent_id==$goodsCategory->id){
+                throw new \HttpException(404,'不能移动到节点到自己节点下');
+            }*/
+           try{
 
-            }else{
-                //一级分类
-                $goodsCategory->makeRoot();
-            }
-            //修改成功后，提示
-            \Yii::$app->session->setFlash('success','修改成功');
-            //跳转到列表页
-            return $this->redirect(['goods-category/index']);
+               //$goodsCategory->save();//因为需要判断计算节点，所以不能直接保存
+               //判断是否是添加一级分类
+               if($goodsCategory->parent_id){
+                   //非一级分类
+                   $category=GoodsCategory::findOne(['id'=>$goodsCategory->parent_id]);
+                   if($category){
+                       $goodsCategory->appendTo($category);
+                   }else{
+                       throw new HttpException('404','上级分类不存在');
+                   }
+
+               }else{
+                   //一级分类
+                   //bug fix:修复根节点修改为根节点的bug
+                   if($goodsCategory->oldAttributes['parent_id']==0){
+                       $goodsCategory->save();
+                   }else{
+
+                       $goodsCategory->makeRoot();
+                   }
+               }
+               //修改成功后，提示
+               \Yii::$app->session->setFlash('success','修改成功');
+               //跳转到列表页
+               return $this->redirect(['goods-category/index']);
+           }catch(Exception $e){
+               $goodsCategory->addError('parent_id',GoodsCategory::exceptionInfo($e->getMessage()));
+           }
         }
         //获取所有分类数据
         $categories=GoodsCategory::find()->select(['id','parent_id','name'])->asArray()->all();
@@ -135,7 +165,7 @@ class GoodsCategoryController extends \yii\web\Controller
     //删除分类
     public function actionDelete($id){
         $goodsCategory=GoodsCategory::findOne(['id'=>$id]);
-        //判断右值与左值的差
+       /* //判断右值与左值的差
         if(($goodsCategory->rgt-$goodsCategory->lft)==1){
            $goodsCategory->delete();
            //删除成功，提示
@@ -143,7 +173,16 @@ class GoodsCategoryController extends \yii\web\Controller
         }else{
             //该分类有子类不能删除
             \Yii::$app->session->setFlash('danger','该分类有子类不能删除');
-        }
+        }*/
+       if($goodsCategory==null){
+           throw new NotFoundHttpException('商品分类不存在');
+       }
+       if(!$goodsCategory->isLeaf()){//判断是否是叶子节点，非叶子节点说明有子分类
+            throw new ForbiddenHttpException('该分类下有子分类，无法删除');
+       }
+       $goodsCategory->deleteWithChildren();
+       //删除成功，提示
+        \Yii::$app->session->setFlash('success','删除成功');
         //跳转到列表页
         return $this->redirect(['goods-category/index']);
 
