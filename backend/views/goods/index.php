@@ -4,7 +4,7 @@
     <input type="text" name="shop_price" placeholder="商品价" class=""/>
     <input type="submit" value="搜索" class="btn btn-sm btn-primary">
 </form>
-<?=\yii\bootstrap\Html::a('添加',['goods/add'],['class'=>'btn btn-sm btn-primary'])?>
+<?=\yii\bootstrap\Html::a('添加',['goods/add'],['class'=>'btn btn-sm btn-primary '])?>
 <?=\yii\bootstrap\Html::a('回收站',['goods/recycle'],['class'=>'btn btn-sm btn-primary'])?>
 <table class="table table-bordered table-responsive">
     <tr>
@@ -33,8 +33,10 @@
         <td><?=$model->sort?></td>
         <td><?=date('Y-m-d H:i:s',$model->create_time)?></td>
         <td>
-            <?=\yii\bootstrap\Html::a('编辑',['goods/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning'])?>
-            <?=\yii\bootstrap\Html::a('删除',['goods/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger'])?>
+            <?=\yii\bootstrap\Html::a('查看',['goods/show','id'=>$model->id],['class'=>'btn btn-sm btn-info glyphicon glyphicon-film'])?>
+            <?=\yii\bootstrap\Html::a('相册',['goods/gallery','id'=>$model->id],['class'=>'btn btn-sm btn-info glyphicon glyphicon-picture'])?>
+            <?=\yii\bootstrap\Html::a('编辑',['goods/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?=\yii\bootstrap\Html::a('删除',['goods/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
         </td>
     </tr>
     <?php endforeach;?>

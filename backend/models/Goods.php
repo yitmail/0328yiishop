@@ -3,7 +3,6 @@
 namespace backend\models;
 
 use Yii;
-use creocoder\nestedsets\NestedSetsBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -130,4 +129,13 @@ class Goods extends \yii\db\ActiveRecord
     public static function getBrandOptions(){
         return ArrayHelper::map(Brand::find()->all(),'id','name');
     }
+
+    //商品与商品分类建立一对一关系
+    public function getGoodsCategory(){
+        return $this->hasOne(GoodsCategory::className(),['id'=>'goods_category_id']);
+    }
+    //商品与商品详情
+   public function getGalleries(){
+        return $this->hasMany(GoodsGallery::className(),['goods_id'=>'id']);
+   }
 }

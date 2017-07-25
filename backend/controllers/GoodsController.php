@@ -5,10 +5,12 @@ namespace backend\controllers;
 use backend\models\Goods;
 use backend\models\GoodsCategory;
 use backend\models\GoodsDayCount;
+use backend\models\GoodsGallery;
 use backend\models\GoodsIntro;
 use yii\data\Pagination;
 use flyok666\uploadifive\UploadAction;
 use flyok666\qiniu\Qiniu;
+use yii\web\NotFoundHttpException;
 use yii\web\Request;
 
 class GoodsController extends \yii\web\Controller
@@ -59,17 +61,18 @@ class GoodsController extends \yii\web\Controller
             //验证数据
             if($goods->validate() && $goodsIntro->validate()){
                 //查询商品每日添加数表
-                $row=GoodsDayCount::findOne(['day'=>date('Ymd')]);
+                $day=date('Y-m-d');
+                $row=GoodsDayCount::findOne(['day'=>$day]);
                 if($row==null){
                     $goodsCount=new GoodsDayCount();
-                    $goodsCount->day=date('Ymd');
+                    $goodsCount->day=$day;
                     $goodsCount->count=1;
                     $goodsCount->save();
                     //新增商品自动生成sn,规则为年月日+今天的第几个商品,比如2016053000001
                     $goods->sn=date('Ymd').str_pad($goodsCount->count,5,0,STR_PAD_LEFT);
                 }else{
 //                echo 111;exit;
-                    $row->count=($row->count)+1;
+                    $row->count++;
                     $row->save();
                     //新增商品自动生成sn,规则为年月日+今天的第几个商品,比如2016053000001
                     $goods->sn=date('Ymd').str_pad($row->count,5,0,STR_PAD_LEFT);
@@ -115,7 +118,8 @@ class GoodsController extends \yii\web\Controller
             $goodsIntro->load($request->post());
 //            var_dump($goodsIntro);exit;
             //查询商品每日添加数表
-            $row=GoodsDayCount::findOne(['day'=>date('Ymd')]);
+            $day=date('Ymd');
+            $row=GoodsDayCount::findOne(['day'=>$day]);
             if($row==null){
                 $goodsCount=new GoodsDayCount();
                 $goodsCount->day=date('Ymd');
@@ -197,6 +201,45 @@ class GoodsController extends \yii\web\Controller
         return $this->redirect(['goods/index']);
     }
 
+    //查看商品详细内容
+    public function actionShow($id){
+        //根据id查询一条文章数据
+        $goods=Goods::findOne(['id'=>$id]);
+        //根据id查询一条文章详情
+        $goodsIntro=GoodsIntro::findOne(['goods_id'=>$id]);
+        //根据goods_category_id
+        $goodsCategory=GoodsCategory::findOne(['id'=>$goods->goods_category_id]);
+        //调用视图，并传值
+        return $this->render('show',['goods'=>$goods,'goodsCategory'=>$goodsCategory,'goodsIntro'=>$goodsIntro]);
+    }
+    /*
+    * 商品相册
+    */
+    public function actionGallery($id)
+    {
+        $goods = Goods::findOne(['id'=>$id]);
+        if($goods == null){
+            throw new NotFoundHttpException('商品不存在');
+        }
+
+
+        return $this->render('gallery',['goods'=>$goods]);
+
+    }
+
+    /*
+     * AJAX删除图片
+     */
+    public function actionDelGallery(){
+        $id = \Yii::$app->request->post('id');
+        $model = GoodsGallery::findOne(['id'=>$id]);
+        if($model && $model->delete()){
+            return 'success';
+        }else{
+            return 'fail';
+        }
+
+    }
     public function actions() {
         return [
             's-upload' => [
@@ -235,17 +278,50 @@ class GoodsController extends \yii\web\Controller
                 'afterValidate' => function (UploadAction $action) {},
                 'beforeSave' => function (UploadAction $action) {},
                 'afterSave' => function (UploadAction $action) {
+                    $goods_id = \Yii::$app->request->post('goods_id');
+                    if($goods_id){
+                        $model = new GoodsGallery();
+                        $model->goods_id = $goods_id;
+                        $model->path = $action->getWebUrl();
+                        $model->save();
+                        $action->output['fileUrl'] = $model->path;
+                        $action->output['id'] = $model->id;
+                    }else{
+                        $action->output['fileUrl'] = $action->getWebUrl();//输出文件的相对路径
+                    }
+                    //图片保存为本地相对路径
 //                    $action->output['fileUrl'] = $action->getWebUrl();//输出文件的相对路径
 //                    $action->getFilename(); // "image/yyyymmddtimerand.jpg"
 //                    $action->getWebUrl(); //  "baseUrl + filename, /upload/image/yyyymmddtimerand.jpg"
 //                    $action->getSavePath(); // "/var/www/htdocs/upload/image/yyyymmddtimerand.jpg"
+
                     //将图片上传到七牛云
-                    $qiniu = new Qiniu(\Yii::$app->params['qiniu']);
-                    $qiniu->uploadFile(
-                        $action->getSavePath(), $action->getWebUrl()
-                    );
-                    $url = $qiniu->getLink($action->getWebUrl());
-                    $action->output['fileUrl'] = $url;
+//                    $qiniu = new Qiniu(\Yii::$app->params['qiniu']);
+//                    $qiniu->uploadFile(
+//                        $action->getSavePath(), $action->getWebUrl()
+//                    );
+//                    $url = $qiniu->getLink($action->getWebUrl());
+//                    $action->output['fileUrl'] = $url;
+
+                    //商品相册保存到七牛云
+//                    $qiniu = new Qiniu(\Yii::$app->params['qiniu']);
+//                    $qiniu->uploadFile(
+//                        $action->getSavePath(), $action->getWebUrl()
+//                    );
+//                    $url = $qiniu->getLink($action->getWebUrl());
+//                    $goods_id=\yii::$app->request->post('goods_id');
+//                    if($goods_id){
+//                        $model=new GoodsGallery();
+//                        $model->goods_id=$goods_id;
+//                        $model->path=$url;
+//                        $model->save();
+//                        $action->output['fileUrl'] = $model->path;
+//                        $action->output['id'] = $model->id;
+//                    }else{
+//                        $action->output['fileUrl']  = $url;//输出文件的相对路径
+//                    }
+////
+
                 }
             ],
         ];

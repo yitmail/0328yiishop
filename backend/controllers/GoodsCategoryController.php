@@ -112,12 +112,12 @@ class GoodsCategoryController extends \yii\web\Controller
         }
         //判断提交方式，验证数据
         if($goodsCategory->load(\Yii::$app->request->post()) && $goodsCategory->validate()){
-            $name=$goodsCategory->oldAttributes['name'];
-            $parent_id=$goodsCategory->oldAttributes['parent_id'];
-            $category=GoodsCategory::find()->andWhere(['name'=>$name,'parent_id'=>$parent_id])->all();
-//               var_dump($category);exit;
-            if($category){
-                \Yii::$app->session->setFlash('warning','该分类已存在');
+//            $name=$goodsCategory->oldAttributes['name'];
+//            $parent_id=$goodsCategory->oldAttributes['parent_id'];
+            $ids = GoodsCategory::find()->select(['id'])->where(['parent_id'=>$id])->column();
+            $ids[] = $id;
+            if(in_array($goodsCategory->parent_id,$ids)){
+                \Yii::$app->session->setFlash('warning','不能移动到节点到自己节点下');
                 //跳转到添加页面
                 return $this->redirect(['goods-category/add']);
             }
