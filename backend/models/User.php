@@ -22,7 +22,9 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    const SCENARIO_ADD ='add';//定义添加用户的场景
     public  $password;
+    public $roles=[];//角色
     //定义场景常量
 //    const SCENARIO_ADD = 'add';
 //    const SCENARIO_ADD = 'add';
@@ -53,9 +55,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
 //            [['username', 'password_hash'], 'required'],
-            [['username', 'password'], 'required'],
+            [['username', 'email'], 'required'],
+            [ 'password', 'required','on'=>self::SCENARIO_ADD],
             //['email','match','pattern'=>'/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/'],
-            ['email','email']
+            ['email','email'],
+            ['roles','safe'],
+           // ['password','on'=>self::SCENARIO_ADD],
 
         ];
     }
@@ -78,6 +83,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'last_login_time' => '最后登录时间',
             'last_login_ip' => '最后登录IP',
             'password' => '密码',
+            'roles' => '角色',
         ];
     }
 

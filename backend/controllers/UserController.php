@@ -7,6 +7,7 @@ use backend\models\ModifyPasswordForm;
 use backend\models\User;
 use yii\captcha\CaptchaAction;
 use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 use yii\web\Request;
 
 class UserController extends \yii\web\Controller
@@ -33,6 +34,7 @@ class UserController extends \yii\web\Controller
     public function actionAdd(){
         //实例化用户模型
         $user=new User();
+        $user->scenario=User::SCENARIO_ADD;
         //接收表单提交数据
         $request=new Request();
         //判断提交方式
@@ -42,9 +44,20 @@ class UserController extends \yii\web\Controller
             if($user->validate()){
                 //使用hash密码加密
                 $user->password_hash=\Yii::$app->security->generatePasswordHash($user->password);
+                $user->auth_key=\Yii::$app->security->generateRandomString();
                 $user->status=10;
                 $user->created_at=time();
                 $user->save();
+                //给用户赋予角色
+                $authManager=\Yii::$app->authManager;
+                if(is_array($user->roles)){
+                    foreach ($user->roles as $roleName){
+                        $role=$authManager->getRole($roleName);
+                        if($role){
+                            $authManager->assign($role,$user->id);
+                        }
+                    }
+                }
                 //添加成功
                 \Yii::$app->session->setFlash('success','注册成功');
                 //跳转到列表页
@@ -72,6 +85,16 @@ class UserController extends \yii\web\Controller
                 $user->password_hash=\Yii::$app->security->generatePasswordHash($user->password);
                 $user->updated_at=time();
                 $user->save();
+                $authManager=\Yii::$app->authManager;
+                //给用户赋予角色
+                if(is_array($user->roles)){
+                    foreach ($user->roles as $roleName){
+                        $role=$authManager->getRole($roleName);
+                        if($role){
+                            $authManager->assign($role,$user->id);
+                        }
+                    }
+                }
                 //添加成功
                 \Yii::$app->session->setFlash('success','修改成功');
                 //跳转到列表页
@@ -80,6 +103,12 @@ class UserController extends \yii\web\Controller
                 //验证失败，打印错误信息
                 var_dump($user->getErrors());exit;
             }
+        }else{
+            //回显
+            $authManager=\Yii::$app->authManager;
+            $roles=$authManager->getRolesByUser($id);
+            $user->roles=ArrayHelper::map($roles,'name','name');
+
         }
         //调用视图，并传值
         return $this->render('add',['user'=>$user]);
@@ -162,6 +191,8 @@ class UserController extends \yii\web\Controller
                         $user->password_hash=\Yii::$app->security->generatePasswordHash($model->new_password);
                         $user->save(false);
                        \Yii::$app->user->logout();
+                       //密码修改成功
+                        \Yii::$app->session->setFlash('success','密码修改成功');
                         //跳转
                         return $this->redirect(['user/login']);
                     }

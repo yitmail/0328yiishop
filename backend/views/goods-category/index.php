@@ -2,7 +2,7 @@
     <input type="text" name="keywords" placeholder="输入分类名" class=""/>
     <input type="submit" value="搜索" class="btn btn-sm btn-primary">
 </form>
-<?=\yii\bootstrap\Html::a('添加',['goods-category/add'],['class'=>'btn btn-sm btn-primary'])?>
+<?=\yii\bootstrap\Html::a('添加',['goods-category/add'],['class'=>'btn btn-sm btn-primary glyphicon glyphicon-plus'])?>
 <table class="table table-bordered table-responsive">
     <tr>
         <td>ID</td>
@@ -18,8 +18,8 @@
         <td><?=$model->parent_id?></td>
         <td><?=$model->intro?></td>
         <td>
-            <?=\yii\bootstrap\Html::a('编辑',['goods-category/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning'])?>
-            <?=\yii\bootstrap\Html::a('删除',['goods-category/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger'])?>
+            <?=\yii\bootstrap\Html::a('编辑',['goods-category/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?=\yii\bootstrap\Html::a('删除',['goods-category/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
         </td>
     </tr>
     <?php endforeach;?>

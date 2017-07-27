@@ -3,7 +3,7 @@
     <input type="text" name="keywords" placeholder="输入搜索内容" class=""/>
     <input type="submit" value="搜索" class="btn btn-sm btn-primary">
 </form>
-<?=\yii\bootstrap\Html::a('添加',['article/add'],['class'=>'btn btn-sm btn-primary'])?>
+<?=\yii\bootstrap\Html::a('添加',['article/add'],['class'=>'btn btn-sm btn-primary glyphicon glyphicon-plus'])?>
 <table class="table table-bordered table-responsive">
     <tr>
         <td>ID</td>
@@ -25,9 +25,9 @@
         <td><?=\backend\models\Article::getStatusOptions()[$article->status]?></td>
         <td><?=date('Y-m-d H:i:s',$article->create_time)?></td>
         <td>
-            <?=\yii\bootstrap\Html::a('查看',['article/show','id'=>$article->id],['class'=>'btn btn-sm btn-info'])?>
-            <?=\yii\bootstrap\Html::a('编辑',['article/edit','id'=>$article->id],['class'=>'btn btn-sm btn-warning'])?>
-            <?=\yii\bootstrap\Html::a('删除',['article/delete','id'=>$article->id],['class'=>'btn btn-sm btn-danger'])?>
+            <?=\yii\bootstrap\Html::a('查看',['article/show','id'=>$article->id],['class'=>'btn btn-sm btn-info glyphicon glyphicon-film'])?>
+            <?=\yii\bootstrap\Html::a('编辑',['article/edit','id'=>$article->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?=\yii\bootstrap\Html::a('删除',['article/delete','id'=>$article->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
         </td>
     </tr>
     <?php endforeach;?>

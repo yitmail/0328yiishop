@@ -1,5 +1,5 @@
 
-<?=\yii\bootstrap\Html::a('添加',['brand/add'],['class'=>'btn btn-sm btn-primary'])?>
+<?=\yii\bootstrap\Html::a('添加',['brand/add'],['class'=>'btn btn-sm btn-primary glyphicon glyphicon-plus'])?>
 <table class="table table-bordered table-responsive">
     <tr>
         <td>ID</td>
@@ -19,8 +19,8 @@
         <td><?=$brand->sort?></td>
         <td><?=\backend\models\Brand::getStatusOptions()[$brand->status]?></td>
         <td>
-            <?=\yii\bootstrap\Html::a('编辑',['brand/edit','id'=>$brand->id],['class'=>'btn btn-sm btn-warning'])?>
-            <?=\yii\bootstrap\Html::a('删除',['brand/delete','id'=>$brand->id],['class'=>'btn btn-sm btn-danger'])?>
+            <?=\yii\bootstrap\Html::a('编辑',['brand/edit','id'=>$brand->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?=\yii\bootstrap\Html::a('删除',['brand/delete','id'=>$brand->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
         </td>
     </tr>
     <?php endforeach;?>

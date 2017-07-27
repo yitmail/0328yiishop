@@ -1,4 +1,4 @@
-<?=\yii\bootstrap\Html::a('添加',['article-category/add'],['class'=>'btn btn-sm btn-primary'])?>
+<?=\yii\bootstrap\Html::a('添加',['article-category/add'],['class'=>'btn btn-sm btn-primary glyphicon glyphicon-plus'])?>
 <table class="table table-bordered table-responsive">
     <tr>
         <td>ID</td>
@@ -16,8 +16,8 @@
         <td><?=$model->sort?></td>
         <td><?=\backend\models\ArticleCategory::getStatusOptions()[$model->status]?></td>
         <td>
-            <?=\yii\bootstrap\Html::a('编辑',['article-category/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning'])?>
-            <?=\yii\bootstrap\Html::a('删除',['article-category/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger'])?>
+            <?=\yii\bootstrap\Html::a('编辑',['article-category/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?=\yii\bootstrap\Html::a('删除',['article-category/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
         </td>
     </tr>
     <?php endforeach;?>
