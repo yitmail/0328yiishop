@@ -35,7 +35,7 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
+/*    $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => '文章和分类','items'=>[
             ['label' => '添加文章','url' => ['/article/add']],
@@ -65,8 +65,25 @@ AppAsset::register($this);
             ['label' => '管理员列表','url' => ['/user/index']],
             ['label' => '修改个人密码','url' => ['/user/modify-password']],
         ]],
-    ];
+    ];*/
+    $menuItems = [];
+    $menus=\backend\models\Menu::findAll(['parent_id'=>0]);
+    foreach ($menus as $menu){
+        //一级菜单
+        $items=[];
+        foreach($menu->children as $child){
+            //判断当前用户是否有该路由（菜单）的权限
+            if(Yii::$app->user->can($child->url)){
+                $items[]=['label' => $child->label,'url' => [$child->url]];
+            }
+        }
+        //没有子菜单时，不显示一级菜单
+        if(!empty($items)){
+            $menuItems[]=['label' => $menu->label,'items'=>$items];
+        }
+    }
     if (Yii::$app->user->isGuest) {
+        $menuItems = [];
         $menuItems[] = ['label' => '登录', 'url' => ['/user/login']];
     } else {
         $menuItems[] = '<li>'

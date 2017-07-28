@@ -78,6 +78,8 @@ class UserController extends \yii\web\Controller
         $request=new Request();
         //判断提交方式
         if($request->isPost){
+            $authManager=\Yii::$app->authManager;
+            $authManager->revokeAll($id);
             //加载表单提交的数据，并保存到数据表
             $user->load($request->post());
             if($user->validate()){
@@ -85,7 +87,6 @@ class UserController extends \yii\web\Controller
                 $user->password_hash=\Yii::$app->security->generatePasswordHash($user->password);
                 $user->updated_at=time();
                 $user->save();
-                $authManager=\Yii::$app->authManager;
                 //给用户赋予角色
                 if(is_array($user->roles)){
                     foreach ($user->roles as $roleName){
@@ -104,7 +105,7 @@ class UserController extends \yii\web\Controller
                 var_dump($user->getErrors());exit;
             }
         }else{
-            //回显
+          //回显
             $authManager=\Yii::$app->authManager;
             $roles=$authManager->getRolesByUser($id);
             $user->roles=ArrayHelper::map($roles,'name','name');
@@ -116,6 +117,8 @@ class UserController extends \yii\web\Controller
     //删除用户
     public function actionDelete($id){
         $user=User::findOne(['id'=>$id]);
+        $authManager=\Yii::$app->authManager;
+        $authManager->revokeAll($id);
         //更改状态为0
         $user->status=0;
         $user->save(false);
