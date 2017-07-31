@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\filters\RbacFilter;
 use backend\models\LoginForm;
 use backend\models\ModifyPasswordForm;
 use backend\models\User;
@@ -216,5 +217,16 @@ class UserController extends \yii\web\Controller
         //调用视图
         return $this->render('modifyPassword',['model'=>$model]);
 
+    }
+    public function behaviors()
+    {
+        return[
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+                'only'=>[
+                    'add', 'edit','index','delete'
+                ],
+            ]
+        ];
     }
 }

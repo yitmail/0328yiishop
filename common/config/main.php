@@ -9,4 +9,6 @@ return [
             'class'=>'yii\rbac\DbManager'
         ],
     ],
+    //设置语言
+    'language'=>'zh-cn',
 ];

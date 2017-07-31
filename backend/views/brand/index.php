@@ -19,8 +19,14 @@
         <td><?=$brand->sort?></td>
         <td><?=\backend\models\Brand::getStatusOptions()[$brand->status]?></td>
         <td>
+            <?php
+            if(Yii::$app->user->can('brand/edit')){?>
             <?=\yii\bootstrap\Html::a('编辑',['brand/edit','id'=>$brand->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?php } ?>
+            <?php
+            if(Yii::$app->user->can('brand/delete')){?>
             <?=\yii\bootstrap\Html::a('删除',['brand/delete','id'=>$brand->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
+            <?php } ?>
         </td>
     </tr>
     <?php endforeach;?>

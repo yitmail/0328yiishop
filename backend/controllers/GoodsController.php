@@ -332,6 +332,9 @@ class GoodsController extends \yii\web\Controller
         return[
             'rbac'=>[
                 'class'=>RbacFilter::className(),
+                'only'=>[
+                    'add', 'edit','index','delete','s-upload',
+                ],
             ]
         ];
     }

@@ -26,8 +26,14 @@
         <td><?=date('Y-m-d H:i:s',$article->create_time)?></td>
         <td>
             <?=\yii\bootstrap\Html::a('查看',['article/show','id'=>$article->id],['class'=>'btn btn-sm btn-info glyphicon glyphicon-film'])?>
+            <?php
+            if(Yii::$app->user->can('article/edit')){?>
             <?=\yii\bootstrap\Html::a('编辑',['article/edit','id'=>$article->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?php } ?>
+            <?php
+            if(Yii::$app->user->can('article/delete')){?>
             <?=\yii\bootstrap\Html::a('删除',['article/delete','id'=>$article->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
+            <?php } ?>
         </td>
     </tr>
     <?php endforeach;?>

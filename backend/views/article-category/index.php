@@ -16,8 +16,14 @@
         <td><?=$model->sort?></td>
         <td><?=\backend\models\ArticleCategory::getStatusOptions()[$model->status]?></td>
         <td>
+            <?php
+            if(Yii::$app->user->can('article-category/edit')){?>
             <?=\yii\bootstrap\Html::a('编辑',['article-category/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?php } ?>
+            <?php
+            if(Yii::$app->user->can('article-category/delete')){?>
             <?=\yii\bootstrap\Html::a('删除',['article-category/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
+            <?php } ?>
         </td>
     </tr>
     <?php endforeach;?>

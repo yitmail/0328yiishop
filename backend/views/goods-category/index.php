@@ -18,8 +18,14 @@
         <td><?=$model->parent_id?></td>
         <td><?=$model->intro?></td>
         <td>
+            <?php
+            if(Yii::$app->user->can('goods-category/edit')){?>
             <?=\yii\bootstrap\Html::a('编辑',['goods-category/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?php } ?>
+            <?php
+            if(Yii::$app->user->can('goods-category/delete')){?>
             <?=\yii\bootstrap\Html::a('删除',['goods-category/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
+            <?php } ?>
         </td>
     </tr>
     <?php endforeach;?>

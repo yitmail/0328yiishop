@@ -22,8 +22,14 @@
             <td><?=date('Y-m-d H:i:s',$user->last_login_time)?></td>
             <td><?=long2ip($user->last_login_ip)?></td>
             <td>
+                <?php
+                if(Yii::$app->user->can('user/edit')){?>
                 <?=\yii\bootstrap\Html::a('编辑',['user/edit','id'=>$user->id],['class'=>'btn btn-sm btn-warning'])?>
+                <?php } ?>
+                <?php
+                if(Yii::$app->user->can('user/delete')){?>
                 <?=\yii\bootstrap\Html::a('删除',['user/delete','id'=>$user->id],['class'=>'btn btn-sm btn-danger'])?>
+                <?php } ?>
             </td>
         </tr>
     <?php endforeach;?>

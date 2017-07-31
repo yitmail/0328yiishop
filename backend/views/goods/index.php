@@ -35,8 +35,14 @@
         <td>
             <?=\yii\bootstrap\Html::a('查看',['goods/show','id'=>$model->id],['class'=>'btn btn-sm btn-info glyphicon glyphicon-film'])?>
             <?=\yii\bootstrap\Html::a('相册',['goods/gallery','id'=>$model->id],['class'=>'btn btn-sm btn-info glyphicon glyphicon-picture'])?>
+            <?php
+            if(Yii::$app->user->can('goods/edit')){?>
             <?=\yii\bootstrap\Html::a('编辑',['goods/edit','id'=>$model->id],['class'=>'btn btn-sm btn-warning glyphicon glyphicon-edit'])?>
+            <?php } ?>
+            <?php
+            if(Yii::$app->user->can('goods/delete')){?>
             <?=\yii\bootstrap\Html::a('删除',['goods/delete','id'=>$model->id],['class'=>'btn btn-sm btn-danger glyphicon glyphicon-trash'])?>
+            <?php } ?>
         </td>
     </tr>
     <?php endforeach;?>
