@@ -223,7 +223,6 @@ class GoodsController extends \yii\web\Controller
             throw new NotFoundHttpException('商品不存在');
         }
 
-
         return $this->render('gallery',['goods'=>$goods]);
 
     }
@@ -333,7 +332,7 @@ class GoodsController extends \yii\web\Controller
             'rbac'=>[
                 'class'=>RbacFilter::className(),
                 'only'=>[
-                    'add', 'edit','index','delete','s-upload',
+                    'add', 'edit','index','delete',
                 ],
             ]
         ];

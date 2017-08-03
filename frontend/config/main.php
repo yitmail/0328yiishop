@@ -45,6 +45,13 @@ return [
             'rules' => [
             ],
         ],
+        'sms'=>[
+            'class'=>\frontend\components\AliyunSms::className(),
+            'accessKeyId'=>'LTAI7zvKuChGCZ06',
+            'accessKeySecret'=>'Bzp5Pa4KEGJyXJRNOPYwCFoC2E0JwD',
+            'signName'=>'往事随风博客',
+            'templateCode'=>'SMS_80230047'
+        ]
 
     ],
     'params' => $params,

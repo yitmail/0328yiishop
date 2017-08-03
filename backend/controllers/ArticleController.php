@@ -132,7 +132,7 @@ class ArticleController extends \yii\web\Controller
             'rbac'=>[
                 'class'=>RbacFilter::className(),
                 'only'=>[
-                    'add', 'edit','index','delete','upload'
+                    'add', 'edit','index','delete'
                 ],
 
             ]
