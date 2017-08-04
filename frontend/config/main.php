@@ -19,7 +19,7 @@ return [
         'user' => [
 //            'identityClass' => 'common\models\User',
             'identityClass' => 'frontend\models\Member',
-            'loginUrl'=>['member/login'],
+            'loginUrl'=>['goods-category/index'],
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
