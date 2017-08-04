@@ -7,7 +7,7 @@ $params = array_merge(
 );
 
 return [
-    'defaultRoute'=>'member/index',
+    'defaultRoute'=>'goods-category/index',
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -18,7 +18,7 @@ return [
         ],
         'user' => [
 //            'identityClass' => 'common\models\User',
-            'identityClass' => 'frontend\models\Member',
+            'identityClass' =>'frontend\models\Member',
             'loginUrl'=>['member/login'],
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
