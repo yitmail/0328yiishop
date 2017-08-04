@@ -23,7 +23,8 @@ class Member extends ActiveRecord implements IdentityInterface
           ['code','captcha','captchaAction'=>'member/captcha','on'=>self::SCENARIO_REGISTER],
           ['username','unique'],
           ['email','email'],
-          [['email','tel'],'unique']
+          ['email','unique'],
+          //['tel','unique']
         ];
     }
     public function attributeLabels()

@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use frontend\models\Address;
+use frontend\models\Cart;
 use frontend\models\City;
 use frontend\models\LoginForm;
 use frontend\models\Member;
@@ -29,7 +30,6 @@ class MemberController extends Controller{
         if($model->load(\Yii::$app->request->post()) && $model->validate() ){
             $code=\Yii::$app->session->get('code_'.$model->tel);
             if($code && $code==$model->smsCode){
-
                 $model->auth_key=\Yii::$app->security->generateRandomString();
                 $model->password_hash=\Yii::$app->security->generatePasswordHash($model->password);
                 $model->status=1;
@@ -39,10 +39,10 @@ class MemberController extends Controller{
                 return Json::encode(['status'=>true,'msg'=>'注册成功']);
             }else{
                 $model->addError('smsCode','短信验证码错误');
+                return Json::encode(['status'=>false,'msg'=>$model->getErrors()]);
             }
         }else{
             //验证失败，提示错误信息
-
             return Json::encode(['status'=>false,'msg'=>$model->getErrors()]);
         }
     }
@@ -74,24 +74,51 @@ class MemberController extends Controller{
                     $member->save(false);
 //                    //成功，提示
 //                    \Yii::$app->session->setFlash('success','登录成功');
-//                    //跳转到首页
-//                    return $this->redirect(['member/index']);
+                    //跳转到首页
+//                    return $this->redirect(['goods-category/index']);
+                    $member_id=\Yii::$app->user->identity->getId();
+                    $cookies=\Yii::$app->request->cookies;
+                    $carts=unserialize($cookies->get('goods'));
+                    if($carts){
+                        foreach (array_keys($carts) as $cart){
+                            $model=new Cart();
+                            $models=Cart::find()
+                                ->andWhere(['member_id'=>$member_id])
+                                ->andWhere(['goods_id'=>$cart])
+                                ->one();
+                            if(!$models){
+                                $model->goods_id=$cart;
+                                $model->amount=$carts[$cart];
+                                $model->member_id=$member_id;
+                                $model->save(false);
+                            }else{
+                                $models->amount+=$carts[$cart];
+                                $models->save();
+                            }
+                        }
+                        \Yii::$app->response->cookies->remove('goods');
+                    }
                     //保存数据，提示保存成功
                     return Json::encode(['status' => true, 'msg' => '登录成功']);
 
-                } else {
+                }else{
                     //登录失败，密码错误，提示错误信息
-                    $this->addError('password', '密码错误');
+                    $member->addError('password', '密码错误');
                 }
             }else{
                 //用户名不存在，提示错误信息
-                $this->addError('member', '用户名不存在');
+                $member->addError('member', '用户名不存在');
             }
             return false;
         }else{
             //验证失败，提示错误信息
             return Json::encode(['status'=>false,'msg'=>$model->getErrors()]);
         }
+    }
+    //注销
+    public function actionLogout(){
+        \Yii::$app->user->logout();
+        return $this->redirect(['member/login']);
     }
     //获取三级联动地址
     public function actionCity($id){
@@ -189,14 +216,24 @@ class MemberController extends Controller{
         ];
     }
     //测试短信
-    public function actionMessage(){
-        $code = rand(1000,9999);
-        $tel = '18190112031';
-        $res = \Yii::$app->sms->setPhoneNumbers($tel)->setTemplateParam(['code'=>$code])->send();
-//        var_dump($res);exit;
-        //将短信验证码保存redis（session，mysql）
-        \Yii::$app->session->set('code_'.$tel,$code);
-        //验证
-       // $code2 = \Yii::$app->session->get('code_'.$tel);
+    public function actionTel(){
+        $tels =\Yii::$app->request->post('tels');
+        $code = rand(100000,999999);
+        $a= \Yii::$app->sms->setPhoneNumbers($tels)->setTemplateParam(['code'=>$code])->send();
+        if($a){
+            \Yii::$app->session->set('code_'.$tels,$code);
+            return Json::encode(['status'=>true,'msg'=>'短信发送成功']);
+        }else{
+            return Json::encode(['status'=>false,'msg'=>"短信发送失败"]);
+        }
+
+    }
+
+
+    public function actionCheck(){
+        \Yii::$app->user->logout();
+        $cookies=\Yii::$app->request->cookies->get('goods');
+         $carts=unserialize($cookies->value);
+        var_dump($carts);exit;
     }
 }

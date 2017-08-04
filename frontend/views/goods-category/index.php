@@ -23,7 +23,7 @@
 			</div>
 			<div class="topnav_right fr">
 				<ul>
-					<li>您好，欢迎来到京西！[<a href="login.html">登录</a>] [<a href="register.html">免费注册</a>] </li>
+					<li>您好，欢迎来到京西！[<a href="http://www.yiishop.com/member/login">登录</a>] [<a href="http://www.yiishop.com/member/register">免费注册</a>] </li>
 					<li class="line">|</li>
 					<li>我的订单</li>
 					<li class="line">|</li>
@@ -137,7 +137,7 @@
 				
 				<div class="cat_bd">
 					
-					<div class="cat item1">
+					<!--<div class="cat item1">
 						<h3><a href="">图像、音像、数字商品</a> <b></b></h3>
 						<div class="cat_detail">
 							<dl class="dl_1st">
@@ -249,9 +249,9 @@
 							</dl>
 
 						</div>
-					</div>
+					</div>-->
 
-					<div class="cat">
+					<!--<div class="cat">
 						<h3><a href="">家用电器</a><b></b></h3>
 						<div class="cat_detail">
 							<dl class="dl_1st">
@@ -263,7 +263,7 @@
 									<a href="">洗衣机</a>
 									<a href="">热水器</a>
 									<a href="">DVD</a>
-									<a href="">烟机/灶具</a>						
+									<a href="">烟机/灶具</a>
 								</dd>
 							</dl>
 
@@ -276,7 +276,7 @@
 									<a href="">饮水机</a>
 									<a href="">净水设备</a>
 									<a href="">吸尘器</a>
-									<a href="">电风扇</a>						
+									<a href="">电风扇</a>
 								</dd>
 							</dl>
 
@@ -289,7 +289,7 @@
 									<a href="">咖啡机</a>
 									<a href="">微波炉</a>
 									<a href="">电磁炉</a>
-									<a href="">电水壶</a>						
+									<a href="">电水壶</a>
 								</dd>
 							</dl>
 
@@ -302,7 +302,7 @@
 									<a href="">足浴盆</a>
 									<a href="">血压计</a>
 									<a href="">体温计</a>
-									<a href="">血糖仪</a>						
+									<a href="">血糖仪</a>
 								</dd>
 							</dl>
 
@@ -315,18 +315,13 @@
 									<a href="">龙头</a>
 									<a href="">门铃</a>
 									<a href="">电器开关</a>
-									<a href="">插座</a>						
+									<a href="">插座</a>
 								</dd>
 							</dl>
 						</div>
-					</div>
+					</div>-->
 
-					<div class="cat">
-						<h3><a href="">手机、数码</a><b></b></h3>
-						<div class="cat_detail none">
 
-						</div>
-					</div>
                     <?php foreach ($first as $f):?>
                     <div class="cat">
                         <h3><a href="http://www.yiishop.com/goods-list/list?id=<?=$f->id?>"><?=$f->name?></a><b></b></h3>

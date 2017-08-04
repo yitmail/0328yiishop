@@ -18,7 +18,7 @@
 			</div>
 			<div class="topnav_right fr">
 				<ul>
-					<li>您好，欢迎来到京西！[<a href="login.html">登录</a>] [<a href="register.html">免费注册</a>] </li>
+					<li>您好，欢迎来到京西！[<a href="http://www.yiishop.com/member/login">登录</a>] [<a href="http://www.yiishop.com/member/register">免费注册</a>] </li>
 					<li class="line">|</li>
 					<li>我的订单</li>
 					<li class="line">|</li>
@@ -164,7 +164,7 @@
                 if(json.status){
                     alert('登录成功');
                     //跳转到登录页
-                    window.location.href="/member/index";
+                    window.location.href="/goods-category/index";
                 }else{
                     //注册失败 显示错误信息
                     //"msg":{"username":["Username cannot be blank."]}}

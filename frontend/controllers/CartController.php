@@ -62,6 +62,7 @@ class CartController extends Controller{
 
     public function actionCart()
     {
+        //判断用户是否登录
         if (\Yii::$app->user->isGuest) {
             $cookies = \Yii::$app->request->cookies;
             $model = $cookies->get('goods');
@@ -91,9 +92,10 @@ class CartController extends Controller{
 
 
     }
-
+    //修改购物车数据
     public function actionAjaxCart($goods_id,$amount)
     {
+        //判断是否是游客
         if (\Yii::$app->user->isGuest) {
             $cookies = \Yii::$app->request->cookies;
             //获取cookie中的购物车数据
@@ -133,40 +135,7 @@ class CartController extends Controller{
         }
 
     }
-   /* //修改购物车数据
-    public function actionAjaxCart()
-    {
-        $goods_id = \Yii::$app->request->post('goods_id');
-        $amount = \Yii::$app->request->post('amount');
-        //数据验证
-        if(\Yii::$app->user->isGuest){
-            $cookies = \Yii::$app->request->cookies;
-            //获取cookie中的购物车数据
-            $cart = $cookies->get('cart');
-            if($cart==null){
-                $carts = [$goods_id=>$amount];
-            }else{
-                $carts = unserialize($cart->value);
-                if(isset($carts[$goods_id])){
-                    //购物车中已经有该商品，更新数量
-                    $carts[$goods_id] = $amount;
-                }else{
-                    //购物车中没有该商品
-                    $carts[$goods_id] = $amount;
-                }
-            }
-            //将商品id和商品数量写入cookie
-            $cookies = \Yii::$app->response->cookies;
-            $cookie = new Cookie([
-                'name'=>'cart',
-                'value'=>serialize($carts),
-                'expire'=>7*24*3600+time()
-            ]);
-            $cookies->add($cookie);
-            return 'success';
-        }
-    }*/
-
+    //删除购物车数据
     public function actionDelete($id){
         if(!\Yii::$app->user->isGuest){
             $member_id=\Yii::$app->user->identity->getId();
