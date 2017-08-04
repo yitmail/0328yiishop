@@ -1,15 +1,11 @@
 <?php
 namespace frontend\controllers;
-
 use backend\models\Goods;
 use backend\models\GoodsCategory;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
-
-
 class GoodsListController extends Controller {
     public $layout=false;
-
     public function actionList($id)
     {
         //
@@ -24,6 +20,4 @@ class GoodsListController extends Controller {
         $models=Goods::find()->where(['in','goods_category_id',$b])->all();
         return $this->render('list',['model'=>$models]);
     }
-
-
 }

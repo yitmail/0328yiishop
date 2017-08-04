@@ -91,15 +91,14 @@
                             <th class="col3">运费标准</th>
                         </tr>
                         </thead>
-
-                        <tbody>
+                        <tbody id="xgx">
                         <?php foreach ($rows as $key=>$row):?>
                             <tr class="cur">
                                 <td>
                                     <input type="radio" name="delivery" checked="checked" value="<?=$key?>" /><?=$row['name']?>
 
                                 </td>
-                                <td><?=$row['price']?></td>
+                                <td class="xgx2"><em><?=$row['price']?></em>></td>
                                 <td><?=$row['detail']?></td>
                             </tr>
                         <?php endforeach;?>
@@ -171,11 +170,14 @@
                             <ul>
                                 <li>
                                     <span><?=$count?>，总商品金额：</span>
-                                    <em>￥<?=$price?></em>
+                                    ￥<em id="xgx5"><?=$price?></em>
+                                </li>
+                                <li>
+                                    应付邮费： <span id="xgx7"></span>
                                 </li>
 
                                 <li>
-                                    <span>应付总额：</span>
+                                    <span>总商品总额：</span>
                                     <em>￥<?=$price?></em>
                                 </li>
                             </ul>
@@ -192,7 +194,7 @@
             <input type="hidden" name="total" value="<?=serialize($total)?>"/>
             <input type="hidden" name="zje" value="<?=$price?>"/>
             <input type="submit" value="提交订单" />
-            <p>应付总额：<strong>￥<?=$price?>元</strong></p>
+            <p>应付总额：￥<strong id="xgx6"><?=$price?></strong>元</p>
 
     </form>
 </div>
@@ -227,5 +229,19 @@
     </p>
 </div>
 <!-- 底部版权 end -->
+<script type="text/javascript">
+    $('#xgx').click(function () {
+        var a=$('#xgx').find('input:checked').val();
+        var b=$('#xgx').find('input:checked').closest('td').next('td').find('em').text();
+        $('#xgx7').text(b);
+        var c=$('#xgx5').text();
+        var d=parseFloat(c)+parseFloat(b);
+        var x=Math.floor(d*100)/100;
+        console.debug(x);
+        $('#xgx6').text(x);
+    })
+
+
+</script>
 </body>
 </html>
