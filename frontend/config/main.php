@@ -7,7 +7,7 @@ $params = array_merge(
 );
 
 return [
-    'defaultRoute'=>'goods-category/index',
+    'defaultRoute'=>'index.html',
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
