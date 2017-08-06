@@ -10,8 +10,8 @@ class GoodsCategoryController extends Controller{
     public function actionIndex(){
         $first=GoodsCategory::find()->where(['parent_id'=>0])->all();
 //        var_dump($first);exit;
-//        return $this->render('index',['first'=>$first]);
-        $contents=$this->render('index',['first'=>$first]);
-        file_put_contents('index.html',$contents);
+        return $this->render('index',['first'=>$first]);
+/*        $contents=$this->render('index',['first'=>$first]);
+        file_put_contents('index.html',$contents);*/
     }
 }
