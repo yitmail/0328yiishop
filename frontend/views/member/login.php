@@ -164,7 +164,8 @@
                 if(json.status){
                     alert('登录成功');
                     //跳转到登录页
-                    window.location.href="/goods-category/index";
+//                    window.location.href="/goods-category/index";
+                    window.location.href="/index.html";
                 }else{
                     //注册失败 显示错误信息
                     //"msg":{"username":["Username cannot be blank."]}}

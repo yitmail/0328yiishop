@@ -18,4 +18,5 @@ class GoodsIntroController extends Controller{
         return $this->render('goods',['goods'=>$goods,'photos'=>$photos,'intros'=>$intros]);
 
     }
+
 }

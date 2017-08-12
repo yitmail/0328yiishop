@@ -17,14 +17,13 @@ class Member extends ActiveRecord implements IdentityInterface
     {
         return[
           [['username','email','tel'],'required'],
-          [['password','repeat_password','smsCode','code'],'required','on'=>self::SCENARIO_REGISTER],
+          //[['password','repeat_password','smsCode','code'],'required','on'=>self::SCENARIO_REGISTER],
           ['repeat_password','compare','compareAttribute'=>'password','message'=>'两次输入密码不一致'],
         //验证规则
-          ['code','captcha','captchaAction'=>'member/captcha','on'=>self::SCENARIO_REGISTER],
-          ['username','unique'],
+          //['code','captcha','captchaAction'=>'member/captcha','on'=>self::SCENARIO_REGISTER],
+          [['username','email','tel'],'unique'],
           ['email','email'],
-          ['email','unique'],
-          //['tel','unique']
+
         ];
     }
     public function attributeLabels()

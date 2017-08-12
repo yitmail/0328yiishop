@@ -87,7 +87,7 @@ class GoodsController extends \yii\web\Controller
                 //添加成功，提示
                 \Yii::$app->session->setFlash('success','添加成功');
                 //跳转到列表页
-                return $this->redirect(['goods/index']);
+                return $this->redirect(['goods/gallery','id'=>$goods->id]);
             }else{
                 //验证失败，打印错误信息
                 var_dump($goods->getErrors() && $goodsIntro->getErrors());exit;

@@ -229,11 +229,19 @@ class MemberController extends Controller{
 
     }
 
-
+    //注销
     public function actionCheck(){
         \Yii::$app->user->logout();
         $cookies=\Yii::$app->request->cookies->get('goods');
          $carts=unserialize($cookies->value);
         var_dump($carts);exit;
+    }
+
+    public function actionMemberLogin(){
+        $isGuest=\Yii::$app->user->isGuest;
+//        var_dump($isGuest);exit;
+//        var_dump(\Yii::$app->user->identity);exit;
+        return Json::encode(['isGust'=>$isGuest,'identity'=>\Yii::$app->user->identity]);
+
     }
 }

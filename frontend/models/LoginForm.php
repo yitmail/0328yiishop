@@ -12,9 +12,9 @@ class LoginForm extends Model{
     public function rules()
     {
         return[
-            [['username','password','code'],'required'],
+            [['username','password'],'required'],
             //验证规则
-            ['code','captcha','captchaAction'=>'member/captcha'],
+            //['code','captcha','captchaAction'=>'member/captcha'],
             ['rememberMe','boolean'],
         ];
     }
@@ -28,27 +28,30 @@ class LoginForm extends Model{
         ];
     }
 //    //用户登录
-//    public function Login(){
-//        //通过用户名查找用户
-//            $member=Member::findOne(['username'=>$this->username]);
-//       // var_dump($member);exit;
-//        if($member){
-//            //用户存在
-//            //对比密码
-//            $result=\Yii::$app->security->validatePassword($this->password,$member->pass);
-//            if($result){
-//                //密码正确
-//                //登录(保存登录信息到session)
-//                \Yii::$app->member->login($member,$this->rememberMe ? 3600*24*30 : 0);
-//                return true;
-//            }else{
-//                //登录失败，密码错误，提示错误信息
-//                $this->addError('password','密码错误');
-//            }
-//        }else{
-//            //用户名不存在，提示错误信息
-//            $this->addError('member','用户名不存在');
-//        }
-//        return false;
-//    }
+    public function login()
+    {
+        // 通过用户名查找用户
+        $model = Member::findOne(['username' => $this->username]);
+        //判断是否存在该用户
+
+        if ($model) {
+            //验证输入的密码和数据库中的密码是否一致
+            if (\Yii::$app->security->validatePassword($this->password,$model->password_hash)) {
+
+                //密码正确.可以登录
+                //2 登录(保存用户信息到session)
+                \Yii::$app->user->login($model,$this->rememberMe?3600*24:0);
+                return true;
+            } else {
+                //提示密码错误信息
+                $this->addError('password', '密码错误');
+//                return Json::encode(['status'=>false,'msg'=>$model->getErrors()]);
+            }
+        } else {
+            //用户不存在,提示 用户不存在 错误信息
+            $this->addError('username', '用户名不存在');
+//            return Json::encode(['status'=>false,'msg'=>$model->getErrors()]);
+        }
+    }
+
 }
